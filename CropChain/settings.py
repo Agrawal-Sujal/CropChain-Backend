@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-92ne#j6t!dacg1isql!c+_0s3c9c^m@rg@=dve%5sds4^w&fs!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['CropChain.onrender.com']
+ALLOWED_HOSTS = ['cropchain-backend-9b3l.onrender.com']
 
 
 # Application definition
