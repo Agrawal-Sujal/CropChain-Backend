@@ -50,7 +50,9 @@ def sendNotification(request):
     if serializer.is_valid():
         # don’t save, just return
         aadhar_id = serializer.validated_data["aadhar_id"]
-        async_to_sync(sendNotifications)(aadharId=aadhar_id)
+        title = serializer.validated_data["title"]
+        body = serializer.validated_data["body"]
+        async_to_sync(sendNotifications)(aadharId=aadhar_id,title = title, body = body)
 
         return Response({
             "message": "Aadhar received",
