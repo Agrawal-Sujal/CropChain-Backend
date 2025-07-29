@@ -38,7 +38,7 @@ except FileNotFoundError:
     logger.warning("Firebase notifications will not work without the service account key file.")
     pass
 
-async def sendNotification(user, title="CropChain Notification", body="AI Review Done!!", data=None):
+async def sendNotification(user, title="Sujal's Notification", body="Kaise ho sab log?", data=None):
     """Send FCM notification to user with proper logging"""
     try:
         logger.info(f"Starting notification process for user: {user}")
