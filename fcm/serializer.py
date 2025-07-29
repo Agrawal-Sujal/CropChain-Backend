@@ -20,3 +20,13 @@ class FCMTokenSerializer(serializers.Serializer):
             }
         )
         return fcm_token
+    
+
+
+class NotificationSerializer(serializers.Serializer):
+    aadhar_id = serializers.CharField(max_length=12)
+
+    def validate_aadhar_id(self, value):
+        if not value.isdigit() or len(value) != 12:
+            raise serializers.ValidationError("Aadhar must be exactly 12 digits")
+        return value

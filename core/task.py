@@ -1,4 +1,3 @@
-import time
 import asyncio
 import logging
 import os
@@ -11,6 +10,7 @@ from web3._utils.events import get_event_data
 from .send_notification import sendNotification
 from dotenv import load_dotenv
 from CropChain.settings import BASE_DIR
+from web3 import Web3
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Your contract address
 CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+abi = os.getenv('ABI')
 
 # Provider configurations
 PROVIDERS = {
@@ -62,7 +63,24 @@ async def log_handler(handler_context: LogsSubscriptionContext) -> None:
             result = run_ai_on_image(url)
             logger.info(f"AI Result: {result}")
             uploadResult(url,result)
-            await sendNotification(user)
+            web3 = Web3(Web3.HTTPProvider(os.getenv('HTTP_PROVIDER_1')))
+            if not web3.is_connected():
+                logger.error("Failed to connect to Ethereum network")
+                return False
+            
+            logger.info("Connected to Ethereum network")
+        
+            # Get contract instance
+            contract = web3.eth.contract(address=CONTRACT_ADDRESS, abi=abi)
+            logger.info(f"Contract loaded at address: {CONTRACT_ADDRESS}")
+        
+            # Get farmer info from blockchain
+            logger.info("Fetching farmer information from blockchain...")
+            farmer_info = contract.functions.farmer_map(user).call()
+            aadharId = farmer_info[1]
+            logger.info(f"Farmer Aadhar ID: {aadharId}")
+
+            await sendNotification(aadharId)
     except Exception as e:
         logger.error(f"Error in log_handler: {e}", exc_info=True)
 

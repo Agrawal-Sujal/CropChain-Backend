@@ -38,29 +38,29 @@ except FileNotFoundError:
     logger.warning("Firebase notifications will not work without the service account key file.")
     pass
 
-async def sendNotification(user, title="Sujal's Notification", body="Kaise ho sab log?", data=None):
+async def sendNotification(aadharId, title="Sujal's Notification", body="Kaise ho sab log?", data=None):
     """Send FCM notification to user with proper logging"""
     try:
-        logger.info(f"Starting notification process for user: {user}")
+        # logger.info(f"Starting notification process for user: {user}")
         
         # Initialize Web3 connection
-        w3 = Web3(Web3.HTTPProvider(os.getenv('HTTP_PROVIDER_1')))
+        # w3 = Web3(Web3.HTTPProvider(os.getenv('HTTP_PROVIDER_1')))
         
-        if not w3.is_connected():
-            logger.error("Failed to connect to Ethereum network")
-            return False
+        # if not w3.is_connected():
+        #     logger.error("Failed to connect to Ethereum network")
+        #     return False
             
-        logger.info("Connected to Ethereum network")
+        # logger.info("Connected to Ethereum network")
         
-        # Get contract instance
-        contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=abi)
-        logger.info(f"Contract loaded at address: {CONTRACT_ADDRESS}")
+        # # Get contract instance
+        # contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=abi)
+        # logger.info(f"Contract loaded at address: {CONTRACT_ADDRESS}")
         
-        # Get farmer info from blockchain
-        logger.info("Fetching farmer information from blockchain...")
-        farmer_info = contract.functions.farmer_map(user).call()
-        aadharId = farmer_info[1]
-        logger.info(f"Farmer Aadhar ID: {aadharId}")
+        # # Get farmer info from blockchain
+        # logger.info("Fetching farmer information from blockchain...")
+        # farmer_info = contract.functions.farmer_map(user).call()
+        # aadharId = farmer_info[1]
+        # logger.info(f"Farmer Aadhar ID: {aadharId}")
         
         # Get all FCM tokens for the given aadhar ID - use sync_to_async for database operations
         logger.info(f"Searching for FCM tokens for Aadhar ID: {aadharId}")

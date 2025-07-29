@@ -4,6 +4,10 @@ from rest_framework import status
 from .models import FCMToken
 from .serializer import FCMTokenSerializer
 import logging
+from rest_framework.decorators import api_view
+from .serializer import NotificationSerializer
+from .send_notification import sendNotifications
+from asgiref.sync import async_to_sync
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
@@ -39,3 +43,18 @@ class RegisterFCMToken(APIView):
         
         logger.error(f"Invalid serializer data: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def sendNotification(request):
+    serializer = NotificationSerializer(data=request.data)
+    if serializer.is_valid():
+        # don’t save, just return
+        aadhar_id = serializer.validated_data["aadhar_id"]
+        async_to_sync(sendNotifications)(aadharId=aadhar_id)
+
+        return Response({
+            "message": "Aadhar received",
+            "aadhar_id": serializer.validated_data["aadhar_id"]
+        }, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
