@@ -77,10 +77,10 @@ async def sendNotifications(aadharId, title="CropChain Notification", body="AI R
             logger.warning(f"List of tokens that caused failures: {failed_tokens}")
             
             # Optionally remove failed tokens from database - use sync_to_async
-            logger.info("Cleaning up failed tokens from database...")
-            for failed_token in failed_tokens:
-                await sync_to_async(FCMToken.objects.filter(token=failed_token).delete)()
-            logger.info(f"Removed {len(failed_tokens)} failed tokens from database")
+            # logger.info("Cleaning up failed tokens from database...")
+            # for failed_token in failed_tokens:
+            #     await sync_to_async(FCMToken.objects.filter(token=failed_token).delete)()
+            # logger.info(f"Removed {len(failed_tokens)} failed tokens from database")
         
         logger.info(f"Successfully sent messages: {response.success_count}")
         logger.info(f"Failed to send messages: {response.failure_count}")
