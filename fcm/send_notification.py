@@ -31,7 +31,7 @@ except FileNotFoundError:
     logger.warning("Firebase notifications will not work without the service account key file.")
     pass
 
-async def sendNotifications(aadharId, title="CropChain Notification", body="AI Review Done!!", data=None):
+async def sendNotifications(aadharId, title, body,imageId,imageType):
     """Send FCM notification to user with proper logging"""
     try:
         
@@ -48,16 +48,16 @@ async def sendNotifications(aadharId, title="CropChain Notification", body="AI R
         logger.info(f"Found {len(tokens)} FCM tokens for user")
         
         # Prepare notification data
-        if data is None:
-            data = {}
+        data ={
+            "title": title,
+            "body" : body,
+            "imageId" : imageId,
+            "imageType": imageType
+        }
         
         # Create the multicast message
         logger.info("Creating notification message...")
         message = messaging.MulticastMessage(
-            notification=messaging.Notification(
-                title=title,
-                body=body
-            ),
             data=data,
             tokens=tokens,
         )

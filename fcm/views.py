@@ -52,7 +52,9 @@ def sendNotification(request):
         aadhar_id = serializer.validated_data["aadhar_id"]
         title = serializer.validated_data["title"]
         body = serializer.validated_data["body"]
-        async_to_sync(sendNotifications)(aadharId=aadhar_id,title = title, body = body)
+        imageId = serializer.validated_data["imageId"]
+        imageType = serializer.validated_data["imageType"]
+        async_to_sync(sendNotifications)(aadharId=aadhar_id,title = title, body = body,imageId = imageId,imageType = imageType)
 
         return Response({
             "message": "Aadhar received",
